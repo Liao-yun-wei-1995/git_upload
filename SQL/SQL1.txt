@@ -1,0 +1,257 @@
+創造表格練習
+直接在表格點右鍵--新建表格
+CREATE TABLE BBB
+(
+  AAA VARCHAR2(20) 
+, BBB VARCHAR2(20) 
+);
+直接打code創建表格
+create table CCC
+(
+ AAA VARCHAR2(20)
+ ,BBB VARCHAR2(20)
+ );
+ 
+ select練習
+ create table test as select * from SQL_EMP 
+ 
+ select EMP_id,EMP_NM
+ from test
+ where dep='系統開發部';
+ 
+ primary key練習
+ create table SQL_EMP1(
+ EMP_ID char(8 byte)primary key,
+ EMP_NM nvarchar2(20),
+ ID varchar2(10 byte),
+ TEL varchar2(10 byte),
+ DEP nvarchar2(20));
+ 
+ foreign key 創建表格時建立
+ create table SQL_customer1(
+ ID varchar2(10 byte)primary key,
+ name nvarchar2(20),
+ emp char(8 byte) references SQL_EMP1(EMP_ID))
+ 
+ foreign key 創建在已存在表格
+ alter table SQL_CUSTOMER1
+ add foreign key(EMP) references SQL_EMP1(EMP_ID);
+ 
+ 改foreign key 名稱
+ alter table SQL_CUSTOMER1 add constraint SQL_CUSTOMER_FK1 foreign key(EMP)references SQL_EMP1(EMP_ID);
+ 
+ 建index
+ create index SQL_EMP_INDEX1 on SQL_EMP1(DEP)
+ 
+ 創water1 table
+ create table water1 as select * from SQL_TAOYUAN_WATER 
+ 
+ 改欄位名稱
+ select SERIAL_NUMBER as 序號,
+ HYDROGEN as 氫離子濃度指數,
+ TURBIDITY as 濁度,
+ CHLORINE as 自由有效餘氧
+ from water1;
+ 
+ 比較運算練習
+ select * from SQL_EMP
+ where EMP_ID > '0005111';
+ 
+ select * from SQL_EMP 
+ where DEP='系統開發部';
+ 
+ 邏輯運算練習
+ 系統開發部姓王的
+ select* from SQL_EMP
+ where DEP='系統開發部' and EMP_NM like'王%';
+ 
+ 系統開發部、開發系統部的資料
+ select* from SQL_EMP
+ where DEP='系統開發部' or DEP='開發系統部';
+ 
+ 系統開發部姓王、開發系統部姓孫
+  select* from SQL_EMP
+  where (DEP='系統開發部'and EMP_NM like'王%')or (DEP='開發系統部'and EMP_NM like'孫%');
+
+改欄位名稱搭配條件  
+  select SERIAL_NUMBER as 序號,
+ HYDROGEN as 氫離子濃度指數,
+ TURBIDITY as 濁度,
+ CHLORINE as 自由有效餘氧
+ from water1
+ where SERIAL_NUMBER>365;
+ 
+ between練習
+ select*from CARS
+ where min_price between '300' and '600'
+ 
+ in 練習
+ select *from CARS
+ where min_price in ('300' ,'600');
+ 可以比較in 與between練習的結果，可發現in只有包含最低價格為300及600的資料而無再300到600間的data
+ 
+ between 結合 or 練習
+ select*from CARS
+ where min_price between '300' and '600'
+ or min_price ='700';
+ 
+ like 練習
+ select * from cars
+ where manufacturer like'__W' 
+ and price ='700';
+ 
+ 習題五問題一
+ (查詢資料的大小寫要一致)
+ select SERIAL_NUMBER as 序號,
+ HYDROGEN as 氫離子濃度指數,
+ TURBIDITY as 濁度,
+ CHLORINE as 自由有效餘氧
+ from SQL_TAOYUAN_WATER
+ where (hydrogen=7.5 or hydrogen=8)and chlorine>0.6 and place ='T22';
+ 
+ 問題二
+ select SERIAL_NUMBER as 序號,
+ HYDROGEN as 氫離子濃度指數,
+ TURBIDITY as 濁度,
+ CHLORINE as 自由有效餘氧
+ from SQL_TAOYUAN_WATER
+ where serial_number between '521' and'529' 
+ or (CHLORINE in('0.76','0.77','0.66')
+ and HYDROGEN !=7.8 
+ and TURBIDITY=0.6 );
+
+distinct上課例題
+select distinct manufacturer from cars
+
+select distinct manufacturer ,counts(*) from cars group by manufacturer
+
+select distinct DEP , EMP_NM 
+fromSQL_EMP;
+
+練習六
+select distinct PLACE as 地點,
+ SERIAL_NUMBER as 序號,
+ HYDROGEN as 氫離子濃度指數,
+ TURBIDITY as 濁度,
+ CHLORINE as 自由有效餘氧
+ from SQL_TAOYUAN_WATER
+ where (serial_number>520 and serial_number<530)
+ or (CHLORINE in('0.76','0.77','0.66')
+ and HYDROGEN !=7.8 
+ and TURBIDITY=0.6 )
+ order by TURBIDITY asc,SERIAL_NUMBER desc;
+ 
+ 子查詢練習
+ select*
+ from SQL_EMP
+ where EMP_ID in(select distinct EMP from SQL_CUSTOMER)
+ 
+ Union練習
+ select EMP_NM,ID from SQL_EMP
+ union all
+ select NAME,ID from SQL_CUSTOMER;
+ 
+ 練習七
+ 比較union 及union all的差別
+ select distinct PLACE as 地點,
+ SERIAL_NUMBER as 序號,
+ HYDROGEN as 氫離子濃度指數,
+ TURBIDITY as 濁度,
+ CHLORINE as 自由有效餘氧
+ from SQL_TAOYUAN_WATER
+ where (serial_number>520 and serial_number<530)
+ or (CHLORINE in('0.76','0.77','0.66')
+ and HYDROGEN !=7.8 
+ and TURBIDITY=0.6 )
+ --order by TURBIDITY asc,SERIAL_NUMBER desc;
+ union 
+ select distinct PLACE as 地點,
+ SERIAL_NUMBER as 序號,
+ HYDROGEN as 氫離子濃度指數,
+ TURBIDITY as 濁度,
+ CHLORINE as 自由有效餘氧
+ from SQL_TAOYUAN_WATER
+ where (serial_number>520 and serial_number<530)
+ or (CHLORINE in('0.76','0.77','0.66')
+ and HYDROGEN !=7.8 
+ and TURBIDITY=0.6 )
+ --order by TURBIDITY asc,SERIAL_NUMBER desc;
+ ;
+ 
+ 練習六 利用子查詢distint後再select as
+ select PLACE as 地點,
+ SERIAL_NUMBER as 序號,
+ HYDROGEN as 氫離子濃度指數,
+ TURBIDITY as 濁度,
+ CHLORINE as 自由有效餘氧
+ from (
+ select distinct PLACE
+ from SQL_TAOYUAN_WATER
+ where (serial_number>520 and serial_number<530)
+ or (CHLORINE in('0.76','0.77','0.66')
+ and HYDROGEN !=7.8 
+ and TURBIDITY=0.6)
+ )
+ order by TURBIDITY asc,SERIAL_NUMBER desc;
+ 
+ select PLACE as 地點,
+ SERIAL_NUMBER as 序號,
+ HYDROGEN as 氫離子濃度指數,
+ TURBIDITY as 濁度,
+ CHLORINE as 自由有效餘氧
+ from SQL_TAOYUAN_WATER
+ order by TURBIDITY asc,SERIAL_NUMBER desc;
+ 
+ join練習
+ select CUT.ID,CUT.NAME,EMP.EMP_NM
+ from SQL_CUSTOMER CUT
+ inner join SQL_EMP EMP on CUT.EMP=EMP.EMP_ID
+ 
+ left join練習
+ select CUT.ID,CUT.NAME,EMP.EMP_NM
+ from SQL_CUSTOMER CUT
+ left join SQL_EMP EMP on CUT.EMP=EMP.EMP_ID
+ 
+ right join練習
+  select CUT.ID, CUT.NAME, EMP.EMP_NM
+ from SQL_CUSTOMER CUT
+ right join SQL_EMP EMP on CUT.EMP=EMP.EMP_ID
+ 
+ 練習八
+ 第一小題
+ select data.地點,SQL_TAOYUAN_REGIONS.place
+ from
+ (
+ select distinct PLACE as 地點,
+ SERIAL_NUMBER as 序號,
+ HYDROGEN as 氫離子濃度指數,
+ TURBIDITY as 濁度,
+ CHLORINE as 自由有效餘氧,
+  water_system as 編號
+ from SQL_TAOYUAN_WATER
+ where (serial_number>520 and serial_number<530)
+ or (CHLORINE in('0.76','0.77','0.66')
+ and HYDROGEN !=7.8 
+ and TURBIDITY=0.6 )
+ --order by TURBIDITY asc,SERIAL_NUMBER desc;
+ union 
+ select distinct PLACE as 地點,
+ SERIAL_NUMBER as 序號,
+ HYDROGEN as 氫離子濃度指數,
+ TURBIDITY as 濁度,
+ CHLORINE as 自由有效餘氧,
+ water_system as 編號
+ from SQL_TAOYUAN_WATER
+ where (serial_number>520 and serial_number<530)
+ or (CHLORINE in('0.76','0.77','0.66')
+ and HYDROGEN !=7.8 
+ and TURBIDITY=0.6 )
+ --order by TURBIDITY asc,SERIAL_NUMBER desc;
+ ) data
+ left join SQL_TAOYUAN_REGIONS 
+ on data.地點=SQL_TAOYUAN_REGIONS.place 
+ 
+ left join SQL_TAOYUAN_REGIONS 
+ on data.編號=SQL_TAOYUAN_REGIONS.serial ;
+ 
+ select * from SQL_TAOYUAN_WATER;
