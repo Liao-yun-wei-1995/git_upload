@@ -123,7 +123,7 @@ create table CCC
 distinct§WΩ“®“√D
 select distinct manufacturer from cars
 
-select distinct manufacturer ,counts(*) from cars group by manufacturer
+select distinct manufacturer , count(*) from cars group by manufacturer;
 
 select distinct DEP , EMP_NM 
 fromSQL_EMP;
@@ -347,9 +347,9 @@ select * from sql_emp;
 insert into PRACTICE_EMP_123 () 
 
 PPT SQL4 P.13 Ωm≤ﬂ
-select last name, job_id, salary 
+select last_name, job_id, salary 
 from employees 
-where job id =
+where job_id =
     (select job_id 
     from employees
     where job_id='141')
@@ -358,6 +358,11 @@ and
     (select salary 
     from employees
     where employee_id='143');
+
+
+
+
+
     
 anyΩm≤ﬂ
 select employee_id, last_name, job_id, salary
@@ -389,7 +394,14 @@ select employee_id, last_name, department_id
 from employees
 where  LOWER(last_name)=' higgins';
 
-select employee_id, concat(first_name, last_name) name, job_id, LENGTH(last_name),
-instr(last_name, 'a') "contains a 'a' ?"
-from employees
-where substr(job_id, 4)='rep';
+
+PPT SQL4 P.14 Ωm≤ﬂ
+select employee_id, 
+--concat(first_name, last_name) name, job_id, LENGTH(last_name),
+--instr(last_name, 'a') "contains a 'a' ?"
+from employees;
+--where substr(job_id, 4)='rep';
+
+
+select * from employees ;
+
