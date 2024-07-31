@@ -160,11 +160,9 @@ select distinct PLACE as 翴,
  CHLORINE as パΤ緇
  from SQL_TAOYUAN_WATER
  where (serial_number>520 and serial_number<530)
- or (CHLORINE in('0.76','0.77','0.66')
- and HYDROGEN !=7.8 
- and TURBIDITY=0.6 )
+ 
  --order by TURBIDITY asc,SERIAL_NUMBER desc;
- union 
+ union all
  select distinct PLACE as 翴,
  SERIAL_NUMBER as 腹,
  HYDROGEN as 睟瞒緻计,
@@ -217,7 +215,7 @@ select distinct PLACE as 翴,
  from SQL_CUSTOMER CUT
  right join SQL_EMP EMP on CUT.EMP=EMP.EMP_ID
  
- 絤策
+ 絤策(⊿暗ㄓ)
  材肈
  select data.翴,SQL_TAOYUAN_REGIONS.place
  from
@@ -256,3 +254,142 @@ select distinct PLACE as 翴,
  
  select * from SQL_TAOYUAN_WATER;
  
+ 絤策
+ select dataTest.腹, dataTest.睟瞒緻计, dataTest.緽, dataTest.パΤ緇粹, 
+ sql_taoyuan_regions.place, 
+ sql_taoyuan_regions.township,
+ sql_taoyuan_water_system.water_purification_plant, 
+ sql_taoyuan_water_system.water_supply, 
+ sql_taoyuan_water_system.serial
+    --WATER_PURIFICATION_PLANT as 瞓紅,
+    --WATER_SUPPLY as ㄑ╰参,
+    --TOWNSHIP as ︽現跋,
+    --PLACE as 隔琿
+ from  ( 
+    select distinct PLACE as 翴,
+        SERIAL_NUMBER as 腹,
+        HYDROGEN as 睟瞒緻计,
+        TURBIDITY as 緽,
+        CHLORINE as パΤ緇粹,
+        WATER_SYSTEM as ㄑ╰参
+    from SQL_TAOYUAN_WATER
+    where (serial_number>520 and serial_number<530)
+ 
+ --order by TURBIDITY asc,SERIAL_NUMBER desc;
+    union all
+    select distinct PLACE as 翴,
+        SERIAL_NUMBER as 腹,
+        HYDROGEN as 睟瞒緻计,
+        TURBIDITY as 緽,
+        CHLORINE as パΤ緇粹,
+        WATER_SYSTEM as ㄑ╰参
+    from SQL_TAOYUAN_WATER
+    where (serial_number>520 and serial_number<530)
+    or (CHLORINE in('0.76','0.77','0.66')
+    and HYDROGEN !=7.8 
+    and TURBIDITY=0.6 )
+ ) dataTest
+ --order by TURBIDITY asc,SERIAL_NUMBER desc;
+ left join SQL_TAOYUAN_REGIONS
+ on SQL_TAOYUAN_REGIONS.serial = dataTest.翴
+ left join SQL_TAOYUAN_WATER_SYSTEM
+ on sql_taoyuan_water_system.serial=dataTest.ㄑ╰参;
+ 
+ 
+ 
+ 
+ 
+ SQL材绑
+ 
+group by 絤策
+select count(employee_ID), employees.department_ID 
+from employees
+group by department_ID
+; 
+
+group by +join(ゼЧΘ)
+
+select departments.department_name, count(employee_ID), employees.department_ID 
+from employees
+group by department_ID
+; 
+
+
+
+having  
+
+
+--承table
+create table sql_emp_his as select * from sql_emp;
+TRUNCATE TABLE sql_emp_his;
+
+insert絤策
+
+insert into  sql_emp_his
+select emp_id, 'フ', 'C300300300', null, '戈癟狾遏'
+from sql_emp
+where emp_id='00012345';
+
+update絤策
+
+update sql_emp_his
+set TEL='777'
+where EMP_NM='フ';
+
+delete絤策
+delete from sql_emp_his 
+where id='C300300300' and tel='888';
+
+select * from sql_emp_his;
+select * from sql_emp;
+
+揭绑絤策
+insert into PRACTICE_EMP_123 () 
+
+PPT SQL4 P.13 絤策
+select last name, job_id, salary 
+from employees 
+where job id =
+    (select job_id 
+    from employees
+    where job_id='141')
+and
+    salary >
+    (select salary 
+    from employees
+    where employee_id='143');
+    
+any絤策
+select employee_id, last_name, job_id, salary
+from employees
+where salary < any
+            (select salary
+            from employees
+            where job_id='it_prog')
+and job_id<>'it_prog';
+ 
+all 絤策
+select employee_id, last_name, job_id, salary
+from employees
+where salary < all
+            (select salary
+            from employees
+            where job_id='it_prog')
+and job_id<>'it_prog';
+
+タ砏て絤策
+
+
+糶
+select employee_id, last_name, department_id
+from employees
+where last_name=' higgins';
+
+select employee_id, last_name, department_id
+from employees
+where  LOWER(last_name)=' higgins';
+
+select employee_id, concat(first_name, last_name) name, job_id, LENGTH(last_name),
+instr(last_name, 'a') "contains a 'a' ?"
+from employees
+where substr(job_id, 4)='rep';
