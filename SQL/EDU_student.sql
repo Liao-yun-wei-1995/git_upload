@@ -1,407 +1,216 @@
-創造表格練習
-直接在表格點右鍵--新建表格
-CREATE TABLE BBB
-(
-  AAA VARCHAR2(20) 
-, BBB VARCHAR2(20) 
-);
-直接打code創建表格
-create table CCC
-(
- AAA VARCHAR2(20)
- ,BBB VARCHAR2(20)
- );
- 
- select練習
- create table test as select * from SQL_EMP 
- 
- select EMP_id,EMP_NM
- from test
- where dep='系統開發部';
- 
- primary key練習
- create table SQL_EMP1(
- EMP_ID char(8 byte)primary key,
- EMP_NM nvarchar2(20),
- ID varchar2(10 byte),
- TEL varchar2(10 byte),
- DEP nvarchar2(20));
- 
- foreign key 創建表格時建立
- create table SQL_customer1(
- ID varchar2(10 byte)primary key,
- name nvarchar2(20),
- emp char(8 byte) references SQL_EMP1(EMP_ID))
- 
- foreign key 創建在已存在表格
- alter table SQL_CUSTOMER1
- add foreign key(EMP) references SQL_EMP1(EMP_ID);
- 
- 改foreign key 名稱
- alter table SQL_CUSTOMER1 add constraint SQL_CUSTOMER_FK1 foreign key(EMP)references SQL_EMP1(EMP_ID);
- 
- 建index
- create index SQL_EMP_INDEX1 on SQL_EMP1(DEP)
- 
- 創water1 table
- create table water1 as select * from SQL_TAOYUAN_WATER 
- 
- 改欄位名稱
- select SERIAL_NUMBER as 序號,
- HYDROGEN as 氫離子濃度指數,
- TURBIDITY as 濁度,
- CHLORINE as 自由有效餘氧
- from water1;
- 
- 比較運算練習
- select * from SQL_EMP
- where EMP_ID > '0005111';
- 
- select * from SQL_EMP 
- where DEP='系統開發部';
- 
- 邏輯運算練習
- 系統開發部姓王的
- select* from SQL_EMP
- where DEP='系統開發部' and EMP_NM like'王%';
- 
- 系統開發部、開發系統部的資料
- select* from SQL_EMP
- where DEP='系統開發部' or DEP='開發系統部';
- 
- 系統開發部姓王、開發系統部姓孫
-  select* from SQL_EMP
-  where (DEP='系統開發部'and EMP_NM like'王%')or (DEP='開發系統部'and EMP_NM like'孫%');
+--創造並新增資料至防空避難設施as Safity
+create table Safity(
+    village_code VARCHAR2(20),
+    facility_code  VARCHAR2(20),
+    branch_code VARCHAR2(20));
 
-改欄位名稱搭配條件  
-  select SERIAL_NUMBER as 序號,
- HYDROGEN as 氫離子濃度指數,
- TURBIDITY as 濁度,
- CHLORINE as 自由有效餘氧
- from water1
- where SERIAL_NUMBER>365;
- 
- between練習
- select*from CARS
- where min_price between '300' and '600'
- 
- in 練習
- select *from CARS
- where min_price in ('300' ,'600');
- 可以比較in 與between練習的結果，可發現in只有包含最低價格為300及600的資料而無再300到600間的data
- 
- between 結合 or 練習
- select*from CARS
- where min_price between '300' and '600'
- or min_price ='700';
- 
- like 練習
- select * from cars
- where manufacturer like'__W' 
- and price ='700';
- 
- 習題五問題一
- (查詢資料的大小寫要一致)
- select SERIAL_NUMBER as 序號,
- HYDROGEN as 氫離子濃度指數,
- TURBIDITY as 濁度,
- CHLORINE as 自由有效餘氧
- from SQL_TAOYUAN_WATER
- where (hydrogen=7.5 or hydrogen=8)and chlorine>0.6 and place ='T22';
- 
- 問題二
- select SERIAL_NUMBER as 序號,
- HYDROGEN as 氫離子濃度指數,
- TURBIDITY as 濁度,
- CHLORINE as 自由有效餘氧
- from SQL_TAOYUAN_WATER
- where serial_number between '521' and'529' 
- or (CHLORINE in('0.76','0.77','0.66')
- and HYDROGEN !=7.8 
- and TURBIDITY=0.6 );
+insert into safity (village_code, facility_code, branch_code)values('C001','F001','M001');
+insert into safity (village_code, facility_code, branch_code)values('C002','F002','M001');
+insert into safity (village_code, facility_code, branch_code)values('C003','F003','M001');
+insert into safity (village_code, facility_code, branch_code)values('C004','F004','M001');
+insert into safity (village_code, facility_code, branch_code)values('C005','F005','M002');
+insert into safity (village_code, facility_code, branch_code)values('C005','F006','M002');
+insert into safity (village_code, facility_code, branch_code)values('C005','F007','M002');
+insert into safity (village_code, facility_code, branch_code)values('C005','F008','M002');
+insert into safity(village_code, facility_code, branch_code)values('C006','F009','M003');
+insert into safity(village_code, facility_code, branch_code)values('C007','F010','M003');
+insert into safity(village_code, facility_code, branch_code)values('C008','F011','M003');
+insert into safity(village_code, facility_code, branch_code)values('C008','F012','M003');
 
-distinct上課例題
-select distinct manufacturer from cars
+ --創造並新增資料至分局資料 as Branch
+ create table Branch(
+    branch_code VARCHAR2(20),
+    branch_name NVARCHAR2(50),
+    branch_add NVARCHAR2(50),
+    branch_tel VARCHAR2(20)
+    );
 
-select distinct manufacturer , count(*) from cars group by manufacturer;
+insert into Branch(branch_code,  branch_name, branch_add,  branch_tel)VALUES('M001',	'竹南分局',	'苗栗縣竹南鎮民族街72號',	'03 747 4796');
+insert into Branch(branch_code,  branch_name, branch_add,  branch_tel)VALUES('M002',	'苗栗分局',	'苗栗縣苗栗市金鳳街109號',	'03 732 0059');
+insert into Branch(branch_code,  branch_name, branch_add,  branch_tel)VALUES('M003',	'頭份分局',	'苗栗縣頭份市中興路503號', '03 766 3004');
 
-select distinct DEP , EMP_NM 
-fromSQL_EMP;
+--創造並新增資料至村里資料 as Village
+create table Village(
+    village_code VARCHAR2(20),
+    village_name NVARCHAR2(50),
+    village_add NVARCHAR2(50),
+    village_tel VARCHAR2(20)
+    );
 
-練習六
-select distinct PLACE as 地點,
- SERIAL_NUMBER as 序號,
- HYDROGEN as 氫離子濃度指數,
- TURBIDITY as 濁度,
- CHLORINE as 自由有效餘氧
- from SQL_TAOYUAN_WATER
- where (serial_number>520 and serial_number<530)
- or (CHLORINE in('0.76','0.77','0.66')
- and HYDROGEN !=7.8 
- and TURBIDITY=0.6 )
- order by TURBIDITY asc,SERIAL_NUMBER desc;
- 
- 子查詢練習
- select*
- from SQL_EMP
- where EMP_ID in(select distinct EMP from SQL_CUSTOMER)
- 
- Union練習
- select EMP_NM,ID from SQL_EMP
- union all
- select NAME,ID from SQL_CUSTOMER;
- 
- 練習七
- 比較union 及union all的差別
- select distinct PLACE as 地點,
- SERIAL_NUMBER as 序號,
- HYDROGEN as 氫離子濃度指數,
- TURBIDITY as 濁度,
- CHLORINE as 自由有效餘氧
- from SQL_TAOYUAN_WATER
- where (serial_number>520 and serial_number<530)
- 
- --order by TURBIDITY asc,SERIAL_NUMBER desc;
- union all
- select distinct PLACE as 地點,
- SERIAL_NUMBER as 序號,
- HYDROGEN as 氫離子濃度指數,
- TURBIDITY as 濁度,
- CHLORINE as 自由有效餘氧
- from SQL_TAOYUAN_WATER
- where (serial_number>520 and serial_number<530)
- or (CHLORINE in('0.76','0.77','0.66')
- and HYDROGEN !=7.8 
- and TURBIDITY=0.6 )
- --order by TURBIDITY asc,SERIAL_NUMBER desc;
- ;
- 
- 練習六 利用子查詢distint後再select as
- select PLACE as 地點,
- SERIAL_NUMBER as 序號,
- HYDROGEN as 氫離子濃度指數,
- TURBIDITY as 濁度,
- CHLORINE as 自由有效餘氧
- from (
- select distinct PLACE
- from SQL_TAOYUAN_WATER
- where (serial_number>520 and serial_number<530)
- or (CHLORINE in('0.76','0.77','0.66')
- and HYDROGEN !=7.8 
- and TURBIDITY=0.6)
- )
- order by TURBIDITY asc,SERIAL_NUMBER desc;
- 
- select PLACE as 地點,
- SERIAL_NUMBER as 序號,
- HYDROGEN as 氫離子濃度指數,
- TURBIDITY as 濁度,
- CHLORINE as 自由有效餘氧
- from SQL_TAOYUAN_WATER
- order by TURBIDITY asc,SERIAL_NUMBER desc;
- 
- join練習
- select CUT.ID,CUT.NAME,EMP.EMP_NM
- from SQL_CUSTOMER CUT
- inner join SQL_EMP EMP on CUT.EMP=EMP.EMP_ID
- 
- left join練習
- select CUT.ID,CUT.NAME,EMP.EMP_NM
- from SQL_CUSTOMER CUT
- left join SQL_EMP EMP on CUT.EMP=EMP.EMP_ID
- 
- right join練習
-  select CUT.ID, CUT.NAME, EMP.EMP_NM
- from SQL_CUSTOMER CUT
- right join SQL_EMP EMP on CUT.EMP=EMP.EMP_ID
- 
- 練習八(沒做出來)
- 第一小題
- select data.地點,SQL_TAOYUAN_REGIONS.place
- from
- (
- select distinct PLACE as 地點,
- SERIAL_NUMBER as 序號,
- HYDROGEN as 氫離子濃度指數,
- TURBIDITY as 濁度,
- CHLORINE as 自由有效餘氧,
-  water_system as 編號
- from SQL_TAOYUAN_WATER
- where (serial_number>520 and serial_number<530)
- or (CHLORINE in('0.76','0.77','0.66')
- and HYDROGEN !=7.8 
- and TURBIDITY=0.6 )
- --order by TURBIDITY asc,SERIAL_NUMBER desc;
- union 
- select distinct PLACE as 地點,
- SERIAL_NUMBER as 序號,
- HYDROGEN as 氫離子濃度指數,
- TURBIDITY as 濁度,
- CHLORINE as 自由有效餘氧,
- water_system as 編號
- from SQL_TAOYUAN_WATER
- where (serial_number>520 and serial_number<530)
- or (CHLORINE in('0.76','0.77','0.66')
- and HYDROGEN !=7.8 
- and TURBIDITY=0.6 )
- --order by TURBIDITY asc,SERIAL_NUMBER desc;
- ) data
- left join SQL_TAOYUAN_REGIONS 
- on data.地點=SQL_TAOYUAN_REGIONS.place 
- 
- left join SQL_TAOYUAN_REGIONS 
- on data.編號=SQL_TAOYUAN_REGIONS.serial ;
- 
- select * from SQL_TAOYUAN_WATER;
- 
- 練習八
- select dataTest.序號, dataTest.氫離子濃度指數, dataTest.濁度, dataTest.自由有效餘氯, 
- sql_taoyuan_regions.place, 
- sql_taoyuan_regions.township,
- sql_taoyuan_water_system.water_purification_plant, 
- sql_taoyuan_water_system.water_supply, 
- sql_taoyuan_water_system.serial
-    --WATER_PURIFICATION_PLANT as 淨水廠,
-    --WATER_SUPPLY as 供水系統,
-    --TOWNSHIP as 行政區,
-    --PLACE as 路段
- from  ( 
-    select distinct PLACE as 地點,
-        SERIAL_NUMBER as 序號,
-        HYDROGEN as 氫離子濃度指數,
-        TURBIDITY as 濁度,
-        CHLORINE as 自由有效餘氯,
-        WATER_SYSTEM as 供水系統
-    from SQL_TAOYUAN_WATER
-    where (serial_number>520 and serial_number<530)
- 
- --order by TURBIDITY asc,SERIAL_NUMBER desc;
-    union all
-    select distinct PLACE as 地點,
-        SERIAL_NUMBER as 序號,
-        HYDROGEN as 氫離子濃度指數,
-        TURBIDITY as 濁度,
-        CHLORINE as 自由有效餘氯,
-        WATER_SYSTEM as 供水系統
-    from SQL_TAOYUAN_WATER
-    where (serial_number>520 and serial_number<530)
-    or (CHLORINE in('0.76','0.77','0.66')
-    and HYDROGEN !=7.8 
-    and TURBIDITY=0.6 )
- ) dataTest
- --order by TURBIDITY asc,SERIAL_NUMBER desc;
- left join SQL_TAOYUAN_REGIONS
- on SQL_TAOYUAN_REGIONS.serial = dataTest.地點
- left join SQL_TAOYUAN_WATER_SYSTEM
- on sql_taoyuan_water_system.serial=dataTest.供水系統;
- 
- 
- 
- 
- 
- SQL第二堂
- 
-group by 練習
-select count(employee_ID), employees.department_ID 
-from employees
-group by department_ID
-; 
+insert into Village (village_code,  village_name, village_add,  village_tel)VALUES('C001',	'大埔里',	'竹南鎮公義路1035號',	'03 758 1072');
+insert into Village (village_code,  village_name, village_add,  village_tel)VALUES('C002',	'竹南里',	'竹南鎮竹南里中山路 103 號',  '037-472735');
+insert into Village (village_code,  village_name, village_add,  village_tel)VALUES('C003',	'山佳里',	'竹南鎮山佳里國光街 14 號',	'037-614186');
+insert into Village (village_code,  village_name, village_add,  village_tel)VALUES('C004',	'埔頂里',	'後龍鎮埔頂里中興路136-1號',	'037-724839');
+insert into Village (village_code,  village_name, village_add,  village_tel)VALUES('C005',	'綠苗里',	'苗栗市綠苗里中正路 766 號',	'037-333240');
+insert into Village (village_code,  village_name, village_add,  village_tel)VALUES('C006',	'民族里',	'民族里民族路96號',	'037-660001');
+insert into Village (village_code,  village_name, village_add,  village_tel)VALUES('C007',	'忠孝里',	'忠孝里光大街82號',	'037-661145');
+insert into Village (village_code,  village_name, village_add,  village_tel)VALUES('C008',	'信義里',	'信義里信義路53巷1號','	037-616072');
 
-group by +join(未完成)
+--創造並新增資料至村里資料 as Village
 
-select departments.department_name, count(employee_ID), employees.department_ID 
-from employees
-group by department_ID
-; 
+create table Facility(
+    facility_code VARCHAR2(20),
+    facility_add NVARCHAR2(50),
+    facility_amount NUMBER(10,2),
+    facility_floor NUMBER(10,1),
+    facility_type NVARCHAR2(20) 
+    );
+
+insert into Facility (facility_code ,facility_add,facility_amount,facility_floor,facility_type)VALUES('F001',	'苗栗縣竹南鎮中埔街20號',	'100',	'1'	, '公寓');
+insert into Facility (facility_code ,facility_add,facility_amount,facility_floor,facility_type)VALUES('F002',	'苗栗縣竹南鎮和平街79號',	'3142',	'1','大樓');
+insert into Facility (facility_code ,facility_add,facility_amount,facility_floor,facility_type)VALUES('F003',	'苗栗縣竹南鎮龍山路三段142號',	'1072',	'1','大樓');
+insert into Facility (facility_code ,facility_add,facility_amount,facility_floor,facility_type)VALUES('F004',	'苗栗縣後龍鎮中華路1498號',	'32',	'1',	'公共設施');
+insert into Facility (facility_code ,facility_add,facility_amount,facility_floor,facility_type)VALUES('F005',	'苗栗縣苗栗市米市街80號',	'106',	'1',	'公寓');
+insert into Facility (facility_code ,facility_add,facility_amount,facility_floor,facility_type)VALUES('F006',	'苗栗縣苗栗市光復路117號',	'26',	'1',	'公寓');
+insert into Facility (facility_code ,facility_add,facility_amount,facility_floor,facility_type)VALUES('F007',	'苗栗縣苗栗市博愛街109號',	'2038',	'2',	'大樓');
+insert into Facility (facility_code ,facility_add,facility_amount,facility_floor,facility_type)VALUES('F008',	'苗栗縣苗栗市大同路53號',	'128',	'2',	'大樓');
+insert into Facility (facility_code ,facility_add,facility_amount,facility_floor,facility_type)VALUES('F009',	'苗栗縣頭份市民族里和平路102號',	'353',	'1',	'公共設施');
+insert into Facility (facility_code ,facility_add,facility_amount,facility_floor,facility_type)VALUES('F010',	'苗栗縣頭份市忠孝忠孝一路69號',	'501',	'1',	'私營單位');
+insert into Facility (facility_code ,facility_add,facility_amount,facility_floor,facility_type)VALUES('F011',	'苗栗縣頭份市信義里中正路65號',	'194',	'1',	'公寓');
+insert into Facility (facility_code ,facility_add,facility_amount,facility_floor,facility_type)VALUES('F012',	'苗栗縣頭份市信義里中正路116號',	'78',	'1',	'私營單位
+    ');
 
 
+--4-1
+SELECT 
+    branch.branch_name, branch.branch_tel,facility.facility_code,facility.facility_amount  FROM safity
+    --left join village 
+    --on village.village_code = safity.village_code
+    left join Facility 
+    on facility.facility_code=safity.facility_code
+    left join Branch
+    on branch.branch_code=safity.branch_code
+    where facility.facility_amount>1000;
 
-having  
+--4-2
+--select >1000 並且group得到count
 
-
---創一個table
-create table sql_emp_his as select * from sql_emp;
-TRUNCATE TABLE sql_emp_his;
-
-insert練習
-
-insert into  sql_emp_his
-select emp_id, '小白', 'C300300300', null, '資訊板塊'
-from sql_emp
-where emp_id='00012345';
-
-update練習
-
-update sql_emp_his
-set TEL='777'
-where EMP_NM='小白';
-
-delete練習
-delete from sql_emp_his 
-where id='C300300300' and tel='888';
-
-select * from sql_emp_his;
-select * from sql_emp;
-
-課堂練習十
-insert into PRACTICE_EMP_123 () 
-
-PPT SQL4 P.13 練習
-select last_name, job_id, salary 
-from employees 
-where job_id =
-    (select job_id 
-    from employees
-    where job_id='141')
-and
-    salary >
-    (select salary 
-    from employees
-    where employee_id='143');
-
-
-
-
-
+select over_1000_branch.branch_name, over_1000_branch.branch_tel, over_1000_CNT.cnt
+    from (
+--select >1000 並且group得到count    
+        SELECT  branch.branch_name,  count(Facility.facility_code) as CNT
+        FROM safity
+        left join village 
+        on village.village_code = safity.village_code
+        left join Facility 
+        on facility.facility_code=safity.facility_code
+        left join Branch
+        on branch.branch_code=safity.branch_code
+        where facility.facility_amount>1000
+        group by branch.branch_name) over_1000_CNT
+    left join (
+--select>1000 用distinct去除重複資料
+        SELECT distinct branch.branch_name, branch.branch_tel FROM safity
+        left join village 
+        on village.village_code = safity.village_code
+        left join Facility 
+        on facility.facility_code=safity.facility_code
+        left join Branch
+        on branch.branch_code=safity.branch_code
+        where facility.facility_amount>1000) over_1000_branch
+    on over_1000_branch.branch_name=over_1000_CNT.branch_name;
     
-any練習
-select employee_id, last_name, job_id, salary
-from employees
-where salary < any
-            (select salary
-            from employees
-            where job_id='it_prog')
-and job_id<>'it_prog';
- 
-all 練習
-select employee_id, last_name, job_id, salary
-from employees
-where salary < all
-            (select salary
-            from employees
-            where job_id='it_prog')
-and job_id<>'it_prog';
+--4-3   
 
-正規化練習
+select over_1000_branch.branch_name, over_1000_branch.branch_tel, over_1000_CNT.cnt, over_1000_branch.facility_add, over_1000_branch.facility_type
+    from (
+--select >1000 並且group得到count    
+    SELECT  branch.branch_name,  count(Facility.facility_code) as CNT
+    FROM safity
+    left join village 
+    on village.village_code = safity.village_code
+    left join Facility 
+    on facility.facility_code=safity.facility_code
+    left join Branch
+    on branch.branch_code=safity.branch_code
+    where facility.facility_amount>1000
+    group by branch.branch_name) over_1000_CNT
+    
+    right join (
+--select>1000 資料
+        SELECT  branch.branch_name, branch.branch_tel, facility.facility_add,facility.facility_type FROM safity
+        left join village 
+        on village.village_code = safity.village_code
+        left join Facility 
+        on facility.facility_code=safity.facility_code
+        left join Branch
+        on branch.branch_code=safity.branch_code
+        where facility.facility_amount>1000) over_1000_branch
+    on over_1000_branch.branch_name=over_1000_CNT.branch_name;   
+    
+--4-4
+select village.village_code,village.village_name, facility.facility_add, facility.facility_amount, branch.branch_name, branch.branch_tel FROM safity
+    left join village 
+    on village.village_code = safity.village_code
+    left join Facility 
+    on facility.facility_code=safity.facility_code
+    left join Branch
+    on branch.branch_code=safity.branch_code
+    where facility.facility_add like '%中%';      
+    
+--4-5
+select  village.village_code,village.village_name, village.village_add, facility.facility_add, facility.facility_amount FROM safity
+    left join village 
+    on village.village_code = safity.village_code
+    left join Facility 
+    on facility.facility_code=safity.facility_code
+    left join Branch
+    on branch.branch_code=safity.branch_code
+    where facility.facility_type in ( '公寓','大樓');
 
 
-大小寫
-select employee_id, last_name, department_id
-from employees
-where last_name=' higgins';
+--5-1
+update facility 
+    set facility_amount='5000'
+    where facility_add='苗栗縣竹南鎮和平街79號';
+    
+--5-2
+delete from facility 
+    where facility_amount<1000;
+    
+    drop TABLE facility;
+    
+    
 
-select employee_id, last_name, department_id
-from employees
-where  LOWER(last_name)=' higgins';
+--test
+select over_1000_branch.branch_name, over_1000_branch.branch_tel, over_1000_CNT.cnt
+    from (
+--select >1000 並且group得到count    
+        SELECT  branch.branch_name,  count(Facility.facility_code) as CNT
+        FROM safity
+        left join Facility 
+        on facility.facility_code=safity.facility_code
+        left join Branch
+        on branch.branch_code=safity.branch_code
+        where facility.facility_amount>1000
+        group by branch.branch_name) over_1000_CNT
+    left join (
+--select>1000 用distinct去除重複資料
+        SELECT distinct branch.branch_name, branch.branch_tel FROM safity
+        left join Facility 
+        on facility.facility_code=safity.facility_code
+        left join Branch
+        on branch.branch_code=safity.branch_code
+        where facility.facility_amount>1000) over_1000_branch
+    on over_1000_branch.branch_name=over_1000_CNT.branch_name;  
 
 
-PPT SQL4 P.14 練習
-select employee_id, 
---concat(first_name, last_name) name, job_id, LENGTH(last_name),
---instr(last_name, 'a') "contains a 'a' ?"
-from employees;
---where substr(job_id, 4)='rep';
-
-
-select * from employees ;
+4-2優化版本   
+SELECT  branch.branch_name, branch.branch_tel,count(Facility.facility_code) FROM safity
+        left join Facility 
+        on facility.facility_code=safity.facility_code
+        left join Branch
+        on branch.branch_code=safity.branch_code
+        where facility.facility_amount>1000    
+        group by branch.branch_name, branch.branch_tel;
+        
+4-3優化版本      
+SELECT  branch.branch_name, branch.branch_tel, facility.facility_add, facility.facility_type,count(Facility.facility_code)
+FROM safity
+        left join Facility 
+        on facility.facility_code=safity.facility_code
+        left join Branch
+        on branch.branch_code=safity.branch_code
+        where facility.facility_amount>1000 
+        group by branch.branch_name, branch.branch_tel, facility.facility_add, facility.facility_type;
 
